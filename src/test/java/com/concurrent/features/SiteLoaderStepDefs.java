@@ -10,8 +10,6 @@ import cucumber.annotation.en.When;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 
 import java.io.BufferedReader;
 import java.io.IOException;
