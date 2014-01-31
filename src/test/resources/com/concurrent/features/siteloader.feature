@@ -4,7 +4,7 @@ Feature: Saving web site content
   I Want to save website content to be retrieved later
 
   Scenario: A website is retrieved and saved
-    Given the website "http://www.example.com" is available
+    Given the website "http://www.example.com"
     When the site is retrieved
     Then the content is saved
 
