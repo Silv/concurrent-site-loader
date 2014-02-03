@@ -8,17 +8,11 @@ Feature: Saving web site content
     When the site is retrieved
     Then the content is saved
 
-#  Scenario: Customer eligible for rewards
-#    Given the following list of rewards are valid
-#      |Channel |RewardCode                          |
-#      |SPORTS  |CHAMPIONS_LEAGUE_FINAL_TICKET       |
-#      |KIDS    |                                    |
-#      |MUSIC   |KARAOKE_PRO_MICROPHONE              |
-#      |NEWS    |                                    |
-#      |MOVIES  |PIRATES_OF_THE_CARIBBEAN_COLLECTION |
-#    And the customer is "johndoe123"
-#    And subscribed to channels "SPORTS,MUSIC,NEWS"
-#    And eligible for rewards
-#    When the rewards are requested
-#    Then rewards "CHAMPIONS_LEAGUE_FINAL_TICKET,KARAOKE_PRO_MICROPHONE" are returned only
+  Scenario: Mutliple websites are retrieved and saved
+    Given the following websites
+      |http://www.example.com|
+      |http://www.google.com|
+      |http://www.yahoo.com|
+    When the sites are retrieved
+    Then all content is saved
 

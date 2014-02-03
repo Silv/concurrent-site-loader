@@ -5,6 +5,8 @@ import com.concurrent.gateway.SiteWriter;
 import com.concurrent.usecase.SiteProcessor;
 import org.jsoup.nodes.Document;
 
+import java.util.List;
+
 public class HttpSiteProcessor implements SiteProcessor {
 
     private final SiteReader reader;
@@ -19,5 +21,13 @@ public class HttpSiteProcessor implements SiteProcessor {
     public void process(String url) {
         Document doc = reader.retrieve(url);
         writer.write(doc);
+    }
+
+    @Override
+    public void process(List<String> urls) {
+        for (String url : urls) {
+            Document doc = reader.retrieve(url);
+            writer.write(doc);
+        }
     }
 }

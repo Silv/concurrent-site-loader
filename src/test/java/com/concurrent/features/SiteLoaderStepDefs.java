@@ -4,28 +4,35 @@ import com.concurrent.gateway.SiteReader;
 import com.concurrent.gateway.SiteWriter;
 import com.concurrent.retreiver.HttpSiteProcessor;
 import com.concurrent.usecase.SiteProcessor;
+import com.google.common.collect.ImmutableList;
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;
 import cucumber.annotation.en.When;
+import cucumber.runtime.PendingException;
+import cucumber.table.DataTable;
+import gherkin.formatter.model.DataTableRow;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 
-//@RunWith(Suite.class)
-//@Suite.SuiteClasses({
-//        SiteLoaderStepDefs.RetrieveAndSave.class
-//})
+@RunWith(Enclosed.class)
 public class SiteLoaderStepDefs {
 
+    public static class A_website_is_retrieved_and_saved {
         private SiteReader reader = new FakeReader("/example.html");
         private MockWriter writer = new MockWriter();
         private SiteProcessor siteProcessor = new HttpSiteProcessor(reader, writer);
@@ -43,10 +50,35 @@ public class SiteLoaderStepDefs {
 
         @Then("^the content is saved$")
         public void the_content_is_saved() {
-            Element h1 = writer.getLastDocument().getElementsByTag("h1").first();
+            Element h1 = writer.getDocuments().get(0).getElementsByTag("h1").first();
             assertThat(h1.text(), is(equalTo("Example Domain")));
         }
+    }
 
+    public static class Multiple_websites_are_retrieved_and_saved {
+
+        private SiteReader reader = new FakeReader("/example.html");
+        private MockWriter writer = new MockWriter();
+        private SiteProcessor siteProcessor = new HttpSiteProcessor(reader, writer);
+        private List<String> urls = new ArrayList<>();
+
+        @Given("^the following websites$")
+        public void the_following_websites(DataTable urlTable) {
+            for (DataTableRow dataTableRow : urlTable.getGherkinRows()) {
+                urls.add(dataTableRow.getCells().get(0));
+            }
+        }
+
+        @When("^the sites are retrieved$")
+        public void the_sites_are_retrieved() {
+            siteProcessor.process(urls);
+        }
+
+        @Then("^all content is saved$")
+        public void all_content_is_saved() {
+            assertThat(writer.getDocuments().size(), is(equalTo(urls.size())));
+        }
+    }
 }
 
 class FakeReader implements SiteReader {
@@ -78,13 +110,14 @@ class FakeReader implements SiteReader {
 
 class MockWriter implements SiteWriter {
 
-    private Document lastDocument;
+    private List<Document> documents = new ArrayList<>();
 
     @Override
-    public void write(Document document) {
-        this.lastDocument = document;
+    public void write(Document d) {
+        documents.add(d);
     }
-    Document getLastDocument() {
-        return lastDocument;
+
+    List<Document> getDocuments() {
+        return ImmutableList.copyOf(documents);
     }
 }
