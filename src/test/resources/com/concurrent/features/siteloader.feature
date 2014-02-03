@@ -16,3 +16,18 @@ Feature: Saving web site content
     When the sites are retrieved
     Then all content is saved
 
+  Scenario: Mutliple websites are retrieved and saved concurrently
+    Given the websites
+      |http://www.example.com|
+      |http://www.example.com?1|
+      |http://www.example.com?2|
+      |http://www.example.com?3|
+      |http://www.example.com?4|
+      |http://www.example.com?5|
+      |http://www.example.com?6|
+      |http://www.example.com?7|
+      |http://www.example.com?8|
+      |http://www.example.com?9|
+    When the sites are retrieved concurrently
+    Then content is saved concurrently
+

@@ -4,7 +4,9 @@ import com.concurrent.gateway.SiteReader;
 import com.concurrent.gateway.SiteWriter;
 import com.concurrent.retreiver.HttpSiteProcessor;
 import com.concurrent.usecase.SiteProcessor;
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;
 import cucumber.annotation.en.When;
@@ -64,9 +66,7 @@ public class SiteLoaderStepDefs {
 
         @Given("^the following websites$")
         public void the_following_websites(DataTable urlTable) {
-            for (DataTableRow dataTableRow : urlTable.getGherkinRows()) {
-                urls.add(dataTableRow.getCells().get(0));
-            }
+            urls = Lists.transform(urlTable.getGherkinRows(), new DataTableMapper());
         }
 
         @When("^the sites are retrieved$")
@@ -78,6 +78,36 @@ public class SiteLoaderStepDefs {
         public void all_content_is_saved() {
             assertThat(writer.getDocuments().size(), is(equalTo(urls.size())));
         }
+    }
+
+    public static class Multiple_websites_are_retrieved_and_saved_concurrently {
+
+        private SiteReader reader = new FakeReader("/example.html");
+        private MockWriter writer = new MockWriter();
+        private SiteProcessor siteProcessor = new ConcurrentHttpSiteProcessor(reader, writer, 2);
+        private List<String> urls = new ArrayList<>();
+
+        @Given("^the websites$")
+        public void the_websites(DataTable urlTable) {
+            urls = Lists.transform(urlTable.getGherkinRows(), new DataTableMapper());
+        }
+
+        @When("^the sites are retrieved concurrently$")
+        public void the_sites_are_retrieved_concurrently() {
+            siteProcessor.process(urls);
+        }
+
+        @Then("^content is saved concurrently$")
+        public void content_is_saved_concurrently() {
+            assertThat(writer.getDocuments().size(), is(equalTo(urls.size())));
+        }
+    }
+}
+
+class DataTableMapper implements Function<DataTableRow, String> {
+    @Override
+    public String apply(DataTableRow dataTableRow) {
+        return dataTableRow.getCells().get(0);
     }
 }
 
