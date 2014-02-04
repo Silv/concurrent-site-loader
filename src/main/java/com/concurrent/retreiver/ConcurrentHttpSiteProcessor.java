@@ -1,7 +1,6 @@
-package com.concurrent.features;
+package com.concurrent.retreiver;
 
 import akka.dispatch.ExecutionContexts;
-import akka.dispatch.*;
 import com.concurrent.gateway.SiteReader;
 import com.concurrent.gateway.SiteWriter;
 import com.concurrent.usecase.SiteProcessor;
@@ -10,7 +9,6 @@ import org.jsoup.nodes.Document;
 import scala.concurrent.Await;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.Future;
-import akka.util.Timeout;
 import scala.concurrent.duration.Duration;
 
 import java.util.ArrayList;

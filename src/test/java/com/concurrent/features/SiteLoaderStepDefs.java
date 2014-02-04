@@ -2,6 +2,7 @@ package com.concurrent.features;
 
 import com.concurrent.gateway.SiteReader;
 import com.concurrent.gateway.SiteWriter;
+import com.concurrent.retreiver.ConcurrentHttpSiteProcessor;
 import com.concurrent.retreiver.HttpSiteProcessor;
 import com.concurrent.usecase.SiteProcessor;
 import com.google.common.base.Function;
@@ -10,7 +11,6 @@ import com.google.common.collect.Lists;
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;
 import cucumber.annotation.en.When;
-import cucumber.runtime.PendingException;
 import cucumber.table.DataTable;
 import gherkin.formatter.model.DataTableRow;
 import org.jsoup.Jsoup;
@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
