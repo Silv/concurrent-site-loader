@@ -29,6 +29,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
+import static com.google.common.collect.ImmutableList.Builder;
 
 @RunWith(Enclosed.class)
 public class SiteLoaderStepDefs {
@@ -61,11 +62,11 @@ public class SiteLoaderStepDefs {
         private SiteReader reader = new FakeReader("/example.html");
         private MockWriter writer = new MockWriter();
         private SiteProcessor siteProcessor = new HttpSiteProcessor(reader, writer);
-        private List<String> urls = new ArrayList<>();
+        private ImmutableList<String> urls;
 
         @Given("^the following websites$")
         public void the_following_websites(DataTable urlTable) {
-            urls = Lists.transform(urlTable.getGherkinRows(), new DataTableMapper());
+            urls = ImmutableList.copyOf(Lists.transform(urlTable.getGherkinRows(), new DataTableMapper()));
         }
 
         @When("^the sites are retrieved$")
@@ -84,11 +85,11 @@ public class SiteLoaderStepDefs {
         private SiteReader reader = new FakeReader("/example.html");
         private MockWriter writer = new MockWriter();
         private SiteProcessor siteProcessor = new ConcurrentHttpSiteProcessor(reader, writer, 2);
-        private List<String> urls = new ArrayList<>();
+        private ImmutableList<String> urls;
 
         @Given("^the websites$")
         public void the_websites(DataTable urlTable) {
-            urls = Lists.transform(urlTable.getGherkinRows(), new DataTableMapper());
+            urls = ImmutableList.copyOf(Lists.transform(urlTable.getGherkinRows(), new DataTableMapper()));
         }
 
         @When("^the sites are retrieved concurrently$")

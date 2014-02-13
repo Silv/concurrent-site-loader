@@ -1,9 +1,9 @@
 package com.concurrent.usecase;
 
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 public interface SiteProcessor {
     void process(String url);
 
-    void process(List<String> urls);
+    void process(ImmutableList<String> urls);
 }
