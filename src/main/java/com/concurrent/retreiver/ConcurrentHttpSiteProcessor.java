@@ -6,14 +6,12 @@ import com.concurrent.gateway.SiteReader;
 import com.concurrent.gateway.SiteWriter;
 import com.concurrent.usecase.SiteProcessor;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import org.jsoup.nodes.Document;
 import scala.concurrent.Await;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

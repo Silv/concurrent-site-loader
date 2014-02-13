@@ -6,8 +6,6 @@ import com.concurrent.usecase.SiteProcessor;
 import com.google.common.collect.ImmutableList;
 import org.jsoup.nodes.Document;
 
-import java.util.List;
-
 public class HttpSiteProcessor implements SiteProcessor {
 
     private final SiteReader reader;

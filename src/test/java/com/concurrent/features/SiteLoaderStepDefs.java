@@ -29,7 +29,6 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
-import static com.google.common.collect.ImmutableList.Builder;
 
 @RunWith(Enclosed.class)
 public class SiteLoaderStepDefs {
