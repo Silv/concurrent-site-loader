@@ -25,8 +25,7 @@ public class HttpSiteProcessor implements SiteProcessor {
     @Override
     public void process(ImmutableList<String> urls) {
         for (String url : urls) {
-            Document doc = reader.retrieve(url);
-            writer.write(doc);
+            process(url);
         }
     }
 }
